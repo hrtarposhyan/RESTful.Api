@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Api.Profiles
 {
-    public class AuthorProfile:Profile
+    public class AuthorProfile : Profile
     {
         public AuthorProfile()
         {
@@ -17,7 +17,10 @@ namespace Library.Api.Profiles
                      $"{src.FirstName} {src.LastName}"))
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src =>
                      src.DateOfBirth.GetCurrentAge()));
-           // CreateMap<Entities.Book, Models.BookDto>();
+            CreateMap<Entities.Book, Models.BookDto>();
+            //CreateMap<Models.AuthorForCreationDto, Entities.Author>();
+
+            //CreateMap<Models.BookForCreationDto, Entities.Book>();
         }
     }
 }
