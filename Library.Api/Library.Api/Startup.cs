@@ -39,7 +39,10 @@ namespace Library.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // init Database
             libraryContext.EnsureSeedDataForContext();
+
 
             app.UseHttpsRedirection();
 
