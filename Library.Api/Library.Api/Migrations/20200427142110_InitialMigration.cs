@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Library.Api.Migrations
 {
-    public partial class InitalMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace Library.Api.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
-                    Description = table.Column<string>(maxLength: 50, nullable: true),
+                    Description = table.Column<string>(maxLength: 500, nullable: true),
                     AuthorId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

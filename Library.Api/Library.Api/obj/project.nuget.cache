@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q5vzHspdp5G273LHQ9WrQvL1twKCMrPty4LxnJvH2YIb4ldowyJRqtu7NIaf3KIOL30V1X5htC5vljwK3pt01g==",
+  "dgSpecHash": "6dT6K4kpqJZiCCePmRDSF/lKUDrllPsT/y9PE5oubJqTH7am54ROu2dNrMbKHdVaDQT082Y2c4QyRbFUsl7sQA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hrachya\\source\\repos\\RESTful.Api\\Library.Api\\Library.Api\\Library.Api.csproj",
+  "projectFilePath": "C:\\Users\\Hrachya\\Source\\Repos\\RESTful.Api\\Library.Api\\Library.Api\\Library.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hrachya\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",

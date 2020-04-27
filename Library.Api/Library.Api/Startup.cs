@@ -27,18 +27,19 @@ namespace Library.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc();
-            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("libraryDBConnectionString")), ServiceLifetime.Singleton);
+            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("libraryDBConnectionString")));
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LibraryContext libraryContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            libraryContext.EnsureSeedDataForContext();
 
             app.UseHttpsRedirection();
 
@@ -50,6 +51,7 @@ namespace Library.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

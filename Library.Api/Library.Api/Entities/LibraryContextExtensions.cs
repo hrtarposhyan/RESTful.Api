@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Library.Api.Entities
 {
@@ -9,6 +7,9 @@ namespace Library.Api.Entities
     {
         public static void EnsureSeedDataForContext(this LibraryContext context)
         {
+            // first, clear the database.  This ensures we can always start 
+            // fresh with each demo.  Not advised for production environments, obviously :-)
+
             context.Authors.RemoveRange(context.Authors);
             context.SaveChanges();
 
@@ -17,12 +18,12 @@ namespace Library.Api.Entities
             {
                 new Author()
                 {
-                    Id=new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
-                    FirstName="Stephen",
-                    LastName="King",
-                    Genre="Horror",
-                    DateOfBirth=new DateTimeOffset(new DateTime(1985,4,23)),
-                   Books = new List<Book>()
+                     Id = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
+                     FirstName = "Stephen",
+                     LastName = "King",
+                     Genre = "Horror",
+                     DateOfBirth = new DateTimeOffset(new DateTime(1947, 9, 21)),
+                     Books = new List<Book>()
                      {
                          new Book()
                          {

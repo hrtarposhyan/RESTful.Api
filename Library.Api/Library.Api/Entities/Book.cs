@@ -17,7 +17,7 @@ namespace Library.Api.Entities
         [MaxLength(100)]
         public string Title { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(500)]
         public string Description { get; set; }
 
         [ForeignKey("AuthorId")]
