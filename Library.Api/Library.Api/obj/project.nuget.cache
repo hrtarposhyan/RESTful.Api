@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "6dT6K4kpqJZiCCePmRDSF/lKUDrllPsT/y9PE5oubJqTH7am54ROu2dNrMbKHdVaDQT082Y2c4QyRbFUsl7sQA==",
+  "dgSpecHash": "U3kUmFo2UNjxeMALo+pF3f+yUAS2yKHe7vp5O7s0gzT4djQ/RB0CUP4fKij5wbsREurVTff6Gw0sGQnRY5kg0A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Hrachya\\Source\\Repos\\RESTful.Api\\Library.Api\\Library.Api\\Library.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Hrachya\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
+    "C:\\Users\\Hrachya\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.0\\microsoft.aspnetcore.razor.language.3.1.0.nupkg.sha512",

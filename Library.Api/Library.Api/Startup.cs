@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Library.Api.Entities;
+using Library.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Library.Api.Helpers;
+using AutoMapper;
+using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Library.Api
 {
@@ -29,17 +27,30 @@ namespace Library.Api
         {
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("libraryDBConnectionString")));
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LibraryContext libraryContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            LibraryContext libraryContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault happend.Try again later..");
+                    });
+                });
+            }
             // init Database
             libraryContext.EnsureSeedDataForContext();
 
