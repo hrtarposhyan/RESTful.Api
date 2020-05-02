@@ -39,13 +39,13 @@ namespace Library.Api.Controllers
                 throw new Exception("Creating an author collection Failed on save.");
             }
 
-            var authorCollectionToreturn = _mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
+            var authorCollectionToReturn = _mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
             var idsAsString = string.Join(",",
-                authorCollectionToreturn.Select(a => a.Id));
+                authorCollectionToReturn.Select(a => a.Id));
 
             return CreatedAtRoute("GetAuthorCollection",
                 new { ids = idsAsString },
-                authorCollectionToreturn);
+                authorCollectionToReturn);
 
             //return Ok();
         }

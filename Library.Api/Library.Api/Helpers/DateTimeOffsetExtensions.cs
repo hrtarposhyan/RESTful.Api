@@ -15,7 +15,7 @@ namespace Library.Api.Helpers
             if (currentDate < dateTimeOffset.AddYears(age))
             {
                 age--;
-            }
+            } 
             return age;
         }
     }
