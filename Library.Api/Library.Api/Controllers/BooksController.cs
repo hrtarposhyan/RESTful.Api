@@ -119,6 +119,21 @@ namespace Library.Api.Controllers
             {
                 return BadRequest();
             }
+
+
+            if (book.Description == book.Title)
+            {
+                ModelState.AddModelError(nameof(BookForUpdateDto),
+                    "The provided description should be different from the tuitle.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // return 422
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
+
             if (!_libraryRepository.AuthorExists(authorId))
             {
                 return NotFound();
