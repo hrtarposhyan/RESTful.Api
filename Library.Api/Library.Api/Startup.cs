@@ -10,7 +10,6 @@ using Library.Api.Helpers;
 using AutoMapper;
 using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Library.Api
 {
@@ -26,11 +25,11 @@ namespace Library.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(setupAction =>
+           services.AddControllers(setupAction=>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-            });
+            }).AddXmlDataContractSerializerFormatters()
+            .AddNewtonsoftJson();
 
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("libraryDBConnectionString")));
@@ -59,7 +58,7 @@ namespace Library.Api
                 });
             }
             // init Database
-            libraryContext.EnsureSeedDataForContext();
+           libraryContext.EnsureSeedDataForContext();
 
 
             app.UseHttpsRedirection();

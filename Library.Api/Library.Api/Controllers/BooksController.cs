@@ -154,20 +154,20 @@ namespace Library.Api.Controllers
             if (patchDoc == null)
                 return BadRequest();
 
-            if (_libraryRepository.AuthorExists(authorId))
+            if (!_libraryRepository.AuthorExists(authorId))
                 return NotFound();
 
-            var bookForAuthorRepo = _libraryRepository.GetBookForAuthor(authorId, id);
-            if (bookForAuthorRepo == null)
+            var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
+            if (bookForAuthorFromRepo == null)
                 return NotFound();
 
-            var bookToPatch = _mapper.Map<BookForUpdateDto>(bookForAuthorRepo);
+            var bookToPatch = _mapper.Map<BookForUpdateDto>(bookForAuthorFromRepo);
             patchDoc.ApplyTo(bookToPatch);
 
             // add validation
 
-            _mapper.Map(bookToPatch, bookForAuthorRepo);
-            _libraryRepository.UpdateBookForAuthor(bookForAuthorRepo);
+            _mapper.Map(bookToPatch, bookForAuthorFromRepo);
+            _libraryRepository.UpdateBookForAuthor(bookForAuthorFromRepo);
 
             if (!_libraryRepository.Save())
             {
