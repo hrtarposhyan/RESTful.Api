@@ -4,6 +4,7 @@ using Library.Api.Models;
 using Library.Api.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace Library.Api.Controllers
     {
         private ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
-        public BooksController(ILibraryRepository libraryRepository, IMapper mapper)
+        private ILogger _logger;
+        public BooksController(ILibraryRepository libraryRepository, IMapper mapper,ILogger<BooksController> logger)
         {
             _libraryRepository = libraryRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet()]
@@ -104,10 +107,13 @@ namespace Library.Api.Controllers
             }
             _libraryRepository.DeleteBook(bookForAuthorFromRepo);
 
-            if (_libraryRepository.Save())
+            if (!_libraryRepository.Save())
             {
                 throw new Exception($"Deleting book {id} for author {authorId} failed on save.");
             }
+
+            _logger.LogInformation(100, $"Book {id} for author {authorId} was deleted");
+
             return NoContent();
         }
 
@@ -228,16 +234,20 @@ namespace Library.Api.Controllers
 
             var bookToPatch = _mapper.Map<BookForUpdateDto>(bookForAuthorFromRepo);
 
+            // patchDoc.ApplyTo(bookToPatch, ModelState);
+
+            patchDoc.ApplyTo(bookToPatch);
+
             if (bookToPatch.Description == bookToPatch.Title)
             {
                 ModelState.AddModelError(nameof(BookForUpdateDto),
                     "The provided description should be different from the tuitle.");
             }
+
             TryValidateModel(bookToPatch);
 
             //patchDoc.ApplyTo(bookToPatch);
 
-            patchDoc.ApplyTo(bookToPatch, ModelState);
             if (!ModelState.IsValid)
             {
                 return new UnprocessableEntityObjectResult(ModelState);

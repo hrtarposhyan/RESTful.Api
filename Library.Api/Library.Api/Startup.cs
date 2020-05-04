@@ -10,6 +10,8 @@ using Library.Api.Helpers;
 using AutoMapper;
 using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Library.Api
 {
@@ -39,9 +41,11 @@ namespace Library.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILoggerFactory loggerFactory,
             LibraryContext libraryContext)
         {
+            //loggerFactory.AddConsole();
+            //loggerFactory.AddDebug(LogLevel.Information);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,6 +56,14 @@ namespace Library.Api
                 {
                     appBuilder.Run(async context =>
                     {
+                        var exeptionHendlerFeature=context.Features.Get<IExceptionHandlerFeature>();
+                        if (exeptionHendlerFeature != null)
+                        {
+                            var logger = loggerFactory.CreateLogger("Global exeption logger");
+                            logger.LogError(500,
+                                exeptionHendlerFeature.Error,
+                                exeptionHendlerFeature.Error.Message);
+                        }
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("An unexpected fault happend.Try again later..");
                     });
