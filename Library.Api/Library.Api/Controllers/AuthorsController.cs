@@ -17,11 +17,13 @@ namespace Library.Api.Controllers
     {
         private ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
+        private IUrlHelper _urlHelper;
 
-        public AuthorsController(ILibraryRepository libraryRepository, IMapper mapper)
+        public AuthorsController(ILibraryRepository libraryRepository, IMapper mapper,IUrlHelper urlHelper)
         {
             _libraryRepository = libraryRepository;
             _mapper = mapper;
+            _urlHelper = urlHelper;
         }
         //[HttpGet("api/authors")]
 
@@ -30,26 +32,62 @@ namespace Library.Api.Controllers
         //    var authorsFromRepo = _libraryRepository.GetAuthors();
         //    return new JsonResult(authorsFromRepo);
         //}
-        [HttpGet()]
-        public IActionResult GetAuthors()
+        [HttpGet(Name ="GetAuthors")]
+        public IActionResult GetAuthors(AuthorsResourceParameters authorsResourceParameters)
         {
-            var authorsFromRepo = _libraryRepository.GetAuthors();
-            //var authors = new List<AuthorDto>();
-            var authors = _mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
-            //foreach (var author in authorsfromrepo)
-            //{
-            //    authors.add(new authordto()
-            //    {
-            //        id = author.id,
-            //        name = $"{author.firstname} {author.lastname}",
-            //        genre = author.genre,
-            //        age = author.dateofbirth.getcurrentage()
-            //    });
-            //}
+            var authorsFromRepo = _libraryRepository.GetAuthors(authorsResourceParameters);
 
-            //return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
-            //return new JsonResult(authors);
+            var previousPageLink = authorsFromRepo.HasPrevious ?
+                CreateAuthorsResourceUri(authorsResourceParameters, ResourceUriType.PreviousPage) : null;
+            var nextPageLink = authorsFromRepo.HasNext ?
+                CreateAuthorsResourceUri(authorsResourceParameters, ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = authorsFromRepo.TotalCount,
+                pageSize = authorsFromRepo.PageSize,
+                currentPage = authorsFromRepo.CurrentPage,
+                totalPages = authorsFromRepo.TotalPages,
+                previousPageLink = previousPageLink,
+                nextPageLink = nextPageLink
+            };
+
+            Response.Headers.Add("X-Pagination",
+                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+
+            var authors = _mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
+           
             return Ok(authors);
+        }
+
+        private string CreateAuthorsResourceUri(
+            AuthorsResourceParameters authorsResourceParameters,
+            ResourceUriType type)
+        {
+            switch (type)
+            {
+                case ResourceUriType.PreviousPage:
+                    return _urlHelper.Link("GetAuthors",
+                        new 
+                        {
+                            pageNumber=authorsResourceParameters.PageNumber-1,
+                            pageSize=authorsResourceParameters.PageSize
+                        });
+                case ResourceUriType.NextPage:
+                    return _urlHelper.Link("GetAuthors",
+                        new
+                        {
+                            pageNumber = authorsResourceParameters.PageNumber+1,
+                            pageSize = authorsResourceParameters.PageSize
+                        });
+                default:
+                    return _urlHelper.Link("GetAuthors",
+                        new
+                        {
+                            pageNumber = authorsResourceParameters.PageNumber,
+                            pageSize = authorsResourceParameters.PageSize
+                        });
+            }
         }
 
         //[HttpGet("{id}")]

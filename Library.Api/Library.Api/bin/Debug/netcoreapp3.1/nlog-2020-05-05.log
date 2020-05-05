@@ -1,0 +1,10 @@
+2020-05-05 14:18:05.1702|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-05-05 14:18:05.2445|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2020-05-05 14:18:05.2571|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api
+2020-05-05 14:19:49.0126|ERROR|Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware|An unhandled exception has occurred while executing the request.
+2020-05-05 14:19:49.1306|ERROR|Global exeption logger|The target location specified by path segment 'thisdoesnotexist' was not found.
+2020-05-05 14:20:09.2809|INFO|Library.Api.Controllers.BooksController|Book e57b605f-8b3c-4089-b672-6ce9e6d6c23f for author f74d6899-9ed2-4137-9876-66b070553f8f was deleted
+2020-05-05 14:32:19.3279|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-05-05 14:32:19.5992|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2020-05-05 14:32:19.6572|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api
+2020-05-05 14:32:21.5046|INFO|Library.Api.Controllers.BooksController|Book e57b605f-8b3c-4089-b672-6ce9e6d6c23f for author f74d6899-9ed2-4137-9876-66b070553f8f was deleted

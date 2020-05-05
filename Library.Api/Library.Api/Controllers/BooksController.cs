@@ -18,7 +18,8 @@ namespace Library.Api.Controllers
         private ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
         private ILogger _logger;
-        public BooksController(ILibraryRepository libraryRepository, IMapper mapper,ILogger<BooksController> logger)
+        public BooksController(ILibraryRepository libraryRepository, IMapper mapper,
+            ILogger<BooksController> logger)
         {
             _libraryRepository = libraryRepository;
             _mapper = mapper;
@@ -234,9 +235,9 @@ namespace Library.Api.Controllers
 
             var bookToPatch = _mapper.Map<BookForUpdateDto>(bookForAuthorFromRepo);
 
-            // patchDoc.ApplyTo(bookToPatch, ModelState);
+            patchDoc.ApplyTo(bookToPatch, ModelState);
 
-            patchDoc.ApplyTo(bookToPatch);
+            //patchDoc.ApplyTo(bookToPatch);
 
             if (bookToPatch.Description == bookToPatch.Title)
             {

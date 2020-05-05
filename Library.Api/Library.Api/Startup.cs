@@ -12,6 +12,10 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
+using NLog.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Library.Api
 {
@@ -27,16 +31,34 @@ namespace Library.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddControllers(setupAction=>
+           services.AddMvc(setupAction=>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters()
             .AddNewtonsoftJson();
-
+           
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            //services.AddScoped<IUrlHelper, UrlHelper>(implementationFactory =>
+            //{
+            //    var actionContext =
+            //    implementationFactory.GetService<IActionContextAccessor>().ActionContext;
+            //    return new UrlHelper(actionContext);
+            //});
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext =
+                x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("libraryDBConnectionString")));
+
             services.AddScoped<ILibraryRepository, LibraryRepository>();
-            services.AddControllers();
+
+
+            
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
@@ -44,8 +66,11 @@ namespace Library.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILoggerFactory loggerFactory,
             LibraryContext libraryContext)
         {
-            //loggerFactory.AddConsole();
-            //loggerFactory.AddDebug(LogLevel.Information);
+           //loggerFactory.AddConsole();
+           //loggerFactory.AddDebug(LogLevel.Information);
+
+           //loggerFactory.AddProvider(new NLog.Extensions.NLogLoggerProvider());
+           //loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
