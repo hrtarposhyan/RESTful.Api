@@ -68,19 +68,23 @@ namespace Library.Api.Services
             //var collectionBeforePaging = _context.Authors
             //    .OrderBy(a => a.FirstName)
             //    .ThenBy(a => a.LastName)();
+            //var collectionBeforePaging =
+            //    _context.Authors
+            //    .OrderBy(a => a.FirstName)
+            //    .ThenBy(a => a.LastName)
+            //    .AsQueryable();
+
             var collectionBeforePaging =
-                _context.Authors
-                .OrderBy(a => a.FirstName)
-                .ThenBy(a => a.LastName)
-                .AsQueryable();
+                _context.Authors.ApplySort(authorsResourceParameters.OrderBy,
+                _mappingDictionary);
 
             if (!string.IsNullOrEmpty(authorsResourceParameters.Genre))
             {
                 // trim & ignore casing
                 var genreForWhereClause = authorsResourceParameters.Genre
-                    .Trim().ToLowerInvariant();
+                    .Trim().ToLower();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(a => a.Genre.ToLowerInvariant() == genreForWhereClause);
+                    .Where(a => a.Genre.ToLower() == genreForWhereClause);
             }
 
             if (!string.IsNullOrEmpty(authorsResourceParameters.SearchQuery))
@@ -90,9 +94,9 @@ namespace Library.Api.Services
                     .Trim().ToLowerInvariant();
 
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(a => a.Genre.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                    || a.FirstName.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                    || a.LastName.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(a => a.Genre.ToLower().Contains(searchQueryForWhereClause)
+                    || a.FirstName.ToLower().Contains(searchQueryForWhereClause)
+                    || a.LastName.ToLower().Contains(searchQueryForWhereClause));
             }
 
             return PagedList<Author>.Create(collectionBeforePaging,

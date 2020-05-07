@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OwfkP5uZcdvNHN4ogtrzAkvb4Ah3yKw+GbBVxHcBJyvbLGsi7j2H+/0K4fqPEkYQk0OrxXxJnzu1EsnBSBo7lA==",
+  "dgSpecHash": "8Ogp+Tk6R6z6HiT9qj2q7c6Nowz0M2PoRECzkRvhwzAvpUDwBd0VmaCyHKJq2+K9GTRRBwYy+0Z0ggTd+BGD5w==",
   "success": true,
   "projectFilePath": "C:\\Users\\Hrachya\\Source\\Repos\\RESTful.Api\\Library.Api\\Library.Api\\Library.Api.csproj",
   "expectedPackageFiles": [
@@ -135,6 +135,7 @@
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
+    "C:\\Users\\Hrachya\\.nuget\\packages\\system.linq.dynamic.core\\1.1.0\\system.linq.dynamic.core.1.1.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\Hrachya\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
