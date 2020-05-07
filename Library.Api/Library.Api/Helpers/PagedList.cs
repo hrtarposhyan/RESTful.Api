@@ -11,7 +11,7 @@ namespace Library.Api.Helpers
         public int TotalPages { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
-        public bool HasPrevious 
+        public bool HasPrevious
         {
             get
             {
@@ -26,7 +26,13 @@ namespace Library.Api.Helpers
                 return (CurrentPage < TotalPages);
             }
         }
-
+        /// <summary>
+        /// /ctor
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="count"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
         public PagedList(List<T> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = count;

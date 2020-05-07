@@ -37,13 +37,23 @@ namespace Library.Api
             }).AddXmlDataContractSerializerFormatters()
             .AddNewtonsoftJson();
            
+           
+            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("libraryDBConnectionString")));
+
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
             //services.AddScoped<IUrlHelper, UrlHelper>(implementationFactory =>
             //{
             //    var actionContext =
             //    implementationFactory.GetService<IActionContextAccessor>().ActionContext;
             //    return new UrlHelper(actionContext);
             //});
+
             services.AddScoped<IUrlHelper>(x =>
             {
                 var actionContext =
@@ -51,15 +61,6 @@ namespace Library.Api
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext);
             });
-            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("libraryDBConnectionString")));
-
-            services.AddScoped<ILibraryRepository, LibraryRepository>();
-
-
-            
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

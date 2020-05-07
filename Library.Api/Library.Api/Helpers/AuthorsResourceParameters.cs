@@ -22,5 +22,8 @@ namespace Library.Api.Helpers
                 _pageSize=(value>maxPageSize)?maxPageSize:value;
             }
         }
+
+        public string Genre { get; set; }
+        public string SearchQuery { get; set; }
     }
 }

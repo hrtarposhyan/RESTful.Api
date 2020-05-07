@@ -25,13 +25,7 @@ namespace Library.Api.Controllers
             _mapper = mapper;
             _urlHelper = urlHelper;
         }
-        //[HttpGet("api/authors")]
-
-        //public IActionResult GetAuthors()
-        //{
-        //    var authorsFromRepo = _libraryRepository.GetAuthors();
-        //    return new JsonResult(authorsFromRepo);
-        //}
+        
         [HttpGet(Name ="GetAuthors")]
         public IActionResult GetAuthors(AuthorsResourceParameters authorsResourceParameters)
         {
@@ -70,6 +64,8 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new 
                         {
+                            serchQuery = authorsResourceParameters.SearchQuery,
+                            genre = authorsResourceParameters.Genre,
                             pageNumber=authorsResourceParameters.PageNumber-1,
                             pageSize=authorsResourceParameters.PageSize
                         });
@@ -77,6 +73,8 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
+                            serchQuery=authorsResourceParameters.SearchQuery,
+                            genre = authorsResourceParameters.Genre,
                             pageNumber = authorsResourceParameters.PageNumber+1,
                             pageSize = authorsResourceParameters.PageSize
                         });
@@ -84,6 +82,8 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
+                            serchQuery = authorsResourceParameters.SearchQuery,
+                            genre = authorsResourceParameters.Genre,
                             pageNumber = authorsResourceParameters.PageNumber,
                             pageSize = authorsResourceParameters.PageSize
                         });
