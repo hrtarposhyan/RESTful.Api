@@ -131,3 +131,6 @@ C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netc
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\nlog.config
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\NLog.dll
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\NLog.Extensions.Logging.dll
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\System.Linq.Dynamic.Core.dll
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csproj.CoreCompileInputs.cache
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cache
