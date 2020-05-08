@@ -16,6 +16,8 @@ using NLog.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Library.Api
 {
@@ -34,8 +36,14 @@ namespace Library.Api
            services.AddMvc(setupAction=>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters()
-            .AddNewtonsoftJson();
+                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                //setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            })
+            .AddNewtonsoftJson(options=>
+            {
+                options.SerializerSettings.ContractResolver=
+                new CamelCasePropertyNamesContractResolver();
+            });
            
            
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
