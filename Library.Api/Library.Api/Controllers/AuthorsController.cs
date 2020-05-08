@@ -19,16 +19,19 @@ namespace Library.Api.Controllers
         private readonly IMapper _mapper;
         private IUrlHelper _urlHelper;
         private IPropertyMappingService _propertyMappingService;
+        private ITypeHelperService _typeHelperService;
 
         public AuthorsController(ILibraryRepository libraryRepository, 
             IMapper mapper,
             IUrlHelper urlHelper,
-            IPropertyMappingService propertyMappingService)
+            IPropertyMappingService propertyMappingService,
+            ITypeHelperService typeHelperService)
         {
             _libraryRepository = libraryRepository;
             _mapper = mapper;
             _urlHelper = urlHelper;
             _propertyMappingService = propertyMappingService;
+            _typeHelperService = typeHelperService;
         }
         
         [HttpGet(Name ="GetAuthors")]
@@ -36,6 +39,10 @@ namespace Library.Api.Controllers
         {
             if (!_propertyMappingService.ValidMappingExistsFor<AuthorDto, Author>
                 (authorsResourceParameters.OrderBy))
+                return BadRequest();
+
+            if (!_typeHelperService.TypeHasProperties<AuthorDto>
+                (authorsResourceParameters.Fields))
                 return BadRequest();
 
             var authorsFromRepo = _libraryRepository.GetAuthors(authorsResourceParameters);
@@ -59,8 +66,9 @@ namespace Library.Api.Controllers
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
             var authors = _mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
-           
-            return Ok(authors);
+
+            // return Ok(authors);
+            return Ok(authors.ShapeData(authorsResourceParameters.Fields));
         }
 
         private string CreateAuthorsResourceUri(
@@ -73,6 +81,7 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new 
                         {
+                            fields=authorsResourceParameters.Fields,
                             orderBy=authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
@@ -83,6 +92,7 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
+                            fields=authorsResourceParameters.Fields,
                             orderBy = authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
@@ -93,6 +103,7 @@ namespace Library.Api.Controllers
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
+                            fields=authorsResourceParameters.Fields,
                             orderBy = authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
