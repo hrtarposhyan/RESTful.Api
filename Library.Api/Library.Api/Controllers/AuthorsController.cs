@@ -21,7 +21,7 @@ namespace Library.Api.Controllers
         private IPropertyMappingService _propertyMappingService;
         private ITypeHelperService _typeHelperService;
 
-        public AuthorsController(ILibraryRepository libraryRepository, 
+        public AuthorsController(ILibraryRepository libraryRepository,
             IMapper mapper,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,
@@ -33,8 +33,8 @@ namespace Library.Api.Controllers
             _propertyMappingService = propertyMappingService;
             _typeHelperService = typeHelperService;
         }
-        
-        [HttpGet(Name ="GetAuthors")]
+
+        [HttpGet(Name = "GetAuthors")]
         public IActionResult GetAuthors(AuthorsResourceParameters authorsResourceParameters)
         {
             if (!_propertyMappingService.ValidMappingExistsFor<AuthorDto, Author>
@@ -79,31 +79,31 @@ namespace Library.Api.Controllers
             {
                 case ResourceUriType.PreviousPage:
                     return _urlHelper.Link("GetAuthors",
-                        new 
+                        new
                         {
-                            fields=authorsResourceParameters.Fields,
-                            orderBy=authorsResourceParameters.OrderBy,
+                            fields = authorsResourceParameters.Fields,
+                            orderBy = authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
-                            pageNumber=authorsResourceParameters.PageNumber-1,
-                            pageSize=authorsResourceParameters.PageSize
+                            pageNumber = authorsResourceParameters.PageNumber - 1,
+                            pageSize = authorsResourceParameters.PageSize
                         });
                 case ResourceUriType.NextPage:
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
-                            fields=authorsResourceParameters.Fields,
+                            fields = authorsResourceParameters.Fields,
                             orderBy = authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
-                            pageNumber = authorsResourceParameters.PageNumber+1,
+                            pageNumber = authorsResourceParameters.PageNumber + 1,
                             pageSize = authorsResourceParameters.PageSize
                         });
                 default:
                     return _urlHelper.Link("GetAuthors",
                         new
                         {
-                            fields=authorsResourceParameters.Fields,
+                            fields = authorsResourceParameters.Fields,
                             orderBy = authorsResourceParameters.OrderBy,
                             serchQuery = authorsResourceParameters.SearchQuery,
                             genre = authorsResourceParameters.Genre,
@@ -115,15 +115,22 @@ namespace Library.Api.Controllers
 
         //[HttpGet("{id}")]
         [HttpGet("{id}", Name = "GetAuthor")]
-        public IActionResult GetAuthor(Guid id)
+        public IActionResult GetAuthor(Guid id, [FromQuery] string fields)
         {
+            if (!_typeHelperService.TypeHasProperties<AuthorDto>(fields))
+                return BadRequest();
+
             var authorsFromRepo = _libraryRepository.GetAuthor(id);
+
             if (authorsFromRepo == null)
-            {
                 return NotFound();
-            }
+
             var author = _mapper.Map<AuthorDto>(authorsFromRepo);
-            return new JsonResult(author);
+
+            //return new JsonResult(author);
+
+            // return Ok(author);
+            return Ok(author.ShapeData(fields));
         }
 
         [HttpPost]
