@@ -15,13 +15,14 @@ namespace Library.Api.Controllers
     [Route("api/authors")]
     public class AuthorsController : Controller
     {
-        private ILibraryRepository _libraryRepository;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
-        private IUrlHelper _urlHelper;
-        private IPropertyMappingService _propertyMappingService;
-        private ITypeHelperService _typeHelperService;
+        private readonly IUrlHelper _urlHelper;
+        private readonly IPropertyMappingService _propertyMappingService;
+        private readonly ITypeHelperService _typeHelperService;
 
-        public AuthorsController(ILibraryRepository libraryRepository,
+        public AuthorsController(
+            ILibraryRepository libraryRepository,
             IMapper mapper,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,

@@ -44,11 +44,14 @@ namespace Library.Api
                 options.SerializerSettings.ContractResolver=
                 new CamelCasePropertyNamesContractResolver();
             });
-           
-           
+
+            // register the DbContext on the container, getting the connection string from
+            // appSettings (note: use this during development; in a production environment,
+            // it's better to store the connection string in an environment variable)
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("libraryDBConnectionString")));
 
+            // register the repository
             services.AddScoped<ILibraryRepository, LibraryRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
