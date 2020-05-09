@@ -38,6 +38,8 @@ namespace Library.Api
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 //setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+
+
             })
             .AddNewtonsoftJson(options=>
             {
@@ -52,6 +54,7 @@ namespace Library.Api
                 Configuration.GetConnectionString("libraryDBConnectionString")));
 
             // register the repository
+
             services.AddScoped<ILibraryRepository, LibraryRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

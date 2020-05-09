@@ -76,7 +76,7 @@ namespace Library.Api.Controllers
         /// <param name="authorId"></param>
         /// <param name="book"></param>
         /// <returns></returns>
-        [HttpPost()]
+        [HttpPost(Name = "CreateBookForAuthor")]
         public IActionResult CreateBookForAuthor(Guid authorId,
             [FromBody] BookForCreationDto book)
         {
