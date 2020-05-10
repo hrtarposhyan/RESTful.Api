@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Library.Api.Controllers
 {
+    [ApiController]
     [Route("api/authors/{authorId}/books")]
     public class BooksController : Controller
     {
@@ -32,7 +33,7 @@ namespace Library.Api.Controllers
             _libraryRepository = libraryRepository;
         }
 
-        [HttpGet(Name ="GetBooksForAuthor")]
+        [HttpGet(Name =nameof(GetBooksForAuthor))]
         public IActionResult GetBooksForAuthor(Guid authorId)
         {
             if (!_libraryRepository.AuthorExists(authorId))

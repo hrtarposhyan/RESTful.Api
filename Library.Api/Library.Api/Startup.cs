@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Linq;
 
 namespace Library.Api
 {
@@ -33,18 +34,44 @@ namespace Library.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddMvc(setupAction=>
-            {
-                setupAction.ReturnHttpNotAcceptable = true;
-                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                //setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            services.AddControllers(setup =>
+             {
+                 setup.ReturnHttpNotAcceptable = true;
+             })
+             .AddNewtonsoftJson(setup =>
+             {
+                 setup.SerializerSettings.ContractResolver =
+                      new CamelCasePropertyNamesContractResolver();
+             }).AddXmlDataContractSerializerFormatters();
 
 
-            })
-            .AddNewtonsoftJson(options=>
+            services.Configure<MvcOptions>(config =>
             {
-                options.SerializerSettings.ContractResolver=
-                new CamelCasePropertyNamesContractResolver();
+                //config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                //var xmlDataContractSerializerInputFormatter =
+                //new XmlDataContractSerializerInputFormatter();
+                //xmlDataContractSerializerInputFormatter.SupportedMediaTypes
+                //    .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
+                //config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
+
+                var jsonInputFormatter = config.InputFormatters.
+                              OfType<NewtonsoftJsonInputFormatter>()?.FirstOrDefault();
+
+                if (jsonInputFormatter != null)
+                {
+                    jsonInputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.marvin.author.full+json");
+                    jsonInputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.marvin.authorwithdateofdeath.full+json");
+                }
+
+                var jsonOutputFormatter = config.OutputFormatters
+                   .OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+
+                if (jsonOutputFormatter != null)
+                {
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.marvin.hateoas+json");
+                }
             });
 
             // register the DbContext on the container, getting the connection string from
@@ -53,20 +80,12 @@ namespace Library.Api
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("libraryDBConnectionString")));
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
             // register the repository
-
             services.AddScoped<ILibraryRepository, LibraryRepository>();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
-            //services.AddScoped<IUrlHelper, UrlHelper>(implementationFactory =>
-            //{
-            //    var actionContext =
-            //    implementationFactory.GetService<IActionContextAccessor>().ActionContext;
-            //    return new UrlHelper(actionContext);
-            //});
 
             services.AddScoped<IUrlHelper>(x =>
             {
@@ -82,14 +101,14 @@ namespace Library.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILoggerFactory loggerFactory,
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory,
             LibraryContext libraryContext)
         {
-           //loggerFactory.AddConsole();
-           //loggerFactory.AddDebug(LogLevel.Information);
+            //loggerFactory.AddConsole();
+            //loggerFactory.AddDebug(LogLevel.Information);
 
-           //loggerFactory.AddProvider(new NLog.Extensions.NLogLoggerProvider());
-           //loggerFactory.AddNLog();
+            //loggerFactory.AddProvider(new NLog.Extensions.NLogLoggerProvider());
+            //loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -100,7 +119,7 @@ namespace Library.Api
                 {
                     appBuilder.Run(async context =>
                     {
-                        var exeptionHendlerFeature=context.Features.Get<IExceptionHandlerFeature>();
+                        var exeptionHendlerFeature = context.Features.Get<IExceptionHandlerFeature>();
                         if (exeptionHendlerFeature != null)
                         {
                             var logger = loggerFactory.CreateLogger("Global exeption logger");
@@ -113,9 +132,9 @@ namespace Library.Api
                     });
                 });
             }
-            // init Database
-           libraryContext.EnsureSeedDataForContext();
 
+            // init Database
+            libraryContext.EnsureSeedDataForContext();
 
             app.UseHttpsRedirection();
 
@@ -127,7 +146,6 @@ namespace Library.Api
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }
