@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace Library.Api.Controllers
 {
+    /// <summary>
+    /// Creating a collection of resources
+    /// </summary>
     [Route("api/authorcollections")]
     public class AuthorCollectionsController : Controller
     {

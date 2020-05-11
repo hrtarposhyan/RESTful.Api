@@ -13,19 +13,18 @@ using System.Threading.Tasks;
 
 namespace Library.Api.Controllers
 {
-    [ApiController]
     [Route("api/authors/{authorId}/books")]
     public class BooksController : Controller
     {
         private readonly ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<BooksController> _logger;
-        private readonly UrlHelper _urlHelper;
+        private readonly IUrlHelper _urlHelper;
         public BooksController(
             ILibraryRepository libraryRepository,
             IMapper mapper,
             ILogger<BooksController> logger,
-            UrlHelper urlHelper)
+            IUrlHelper urlHelper)
         {
             _logger = logger;
             _urlHelper = urlHelper;
@@ -33,7 +32,7 @@ namespace Library.Api.Controllers
             _libraryRepository = libraryRepository;
         }
 
-        [HttpGet(Name =nameof(GetBooksForAuthor))]
+        [HttpGet(Name ="GetBooksForAuthor")]
         public IActionResult GetBooksForAuthor(Guid authorId)
         {
             if (!_libraryRepository.AuthorExists(authorId))
@@ -103,6 +102,7 @@ namespace Library.Api.Controllers
             {
                 return NotFound();
             }
+
             var bookEntity = _mapper.Map<Book>(book);
             _libraryRepository.AddBookForAuthor(authorId, bookEntity);
 

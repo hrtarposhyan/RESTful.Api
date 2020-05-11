@@ -193,7 +193,12 @@ namespace Library.Api.Controllers
             return Ok(linkedResourceToReturn);
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Creating a resource
+        /// </summary>
+        /// <param name="author"></param>
+        /// <returns></returns>
+        [HttpPost(Name =("CreateAuthor"))]
         public IActionResult CreateAuthor([FromBody] AuthorForCreationDto author)
         {
             if (author == null)
@@ -227,6 +232,11 @@ namespace Library.Api.Controllers
                 linkedResourceToReturn);
         }
 
+        /// <summary>
+        /// This method handles posts to a single resource
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost("{id}")]
         public IActionResult BlockAuthorCreation(Guid id)
         {
@@ -254,7 +264,7 @@ namespace Library.Api.Controllers
             return NoContent();
         }
 
-
+        //HATEOAS => Dynamic Approch for single resources
         private IEnumerable<LinkDto> CreateLinksForAuthor(Guid id, string fields)
         {
             var links = new List<LinkDto>();
@@ -293,6 +303,7 @@ namespace Library.Api.Controllers
             return links;
         }
 
+        //HATEOAS => Dynamic collection approch
         private IEnumerable<LinkDto> CreateLinksForAuthors(
             AuthorsResourceParameters authorsResourceParameters,
             bool hasNext,bool hasPrevious)

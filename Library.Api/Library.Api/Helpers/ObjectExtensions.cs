@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace Library.Api.Helpers
 {
+    /// <summary>
+    /// Using Reflection for shaping the property
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="fields"></param>
+    /// <returns></returns>
     public static class ObjectExtensions
     {
         public static ExpandoObject ShapeData<TSource>(this TSource source,
