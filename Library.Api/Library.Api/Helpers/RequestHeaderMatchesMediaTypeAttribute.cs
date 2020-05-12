@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Api.Helpers
 {
+    [AttributeUsage(AttributeTargets.All,Inherited =true,AllowMultiple =true)]
     public class RequestHeaderMatchesMediaTypeAttribute: Attribute, IActionConstraint
     {
         private readonly string[] _mediaTypes;

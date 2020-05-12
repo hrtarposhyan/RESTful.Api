@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Linq;
+using Microsoft.Net.Http.Headers;
 
 namespace Library.Api
 {
@@ -42,17 +43,25 @@ namespace Library.Api
              {
                  setup.SerializerSettings.ContractResolver =
                       new CamelCasePropertyNamesContractResolver();
-             }).AddXmlDataContractSerializerFormatters();
+             });
+            services.AddMvc()
+                .AddXmlDataContractSerializerFormatters()
+                .AddMvcOptions(opts =>
+                {
+                    opts.FormatterMappings.SetMediaTypeMappingForFormat("xml", new MediaTypeHeaderValue("application/vnd.marvin.authorwithdateofdeath.full+xml"));
+                });
 
 
             services.Configure<MvcOptions>(config =>
             {
-                //config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                //var xmlDataContractSerializerInputFormatter =
-                //new XmlDataContractSerializerInputFormatter();
-                //xmlDataContractSerializerInputFormatter.SupportedMediaTypes
-                //    .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
-                //config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
+                
+            //     config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+
+            //    var xmlDataContractSerializerInputFormatter =
+            //    new XmlDataContractSerializerInputFormatter();
+            //    xmlDataContractSerializerInputFormatter.SupportedMediaTypes
+            //        .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
+            //    config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
 
                 var jsonInputFormatter = config.InputFormatters.
                               OfType<NewtonsoftJsonInputFormatter>()?.FirstOrDefault();
