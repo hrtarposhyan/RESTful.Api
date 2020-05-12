@@ -20,6 +20,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Linq;
 using Microsoft.Net.Http.Headers;
+using Marvin.Cache.Headers;
 
 namespace Library.Api
 {
@@ -54,14 +55,14 @@ namespace Library.Api
 
             services.Configure<MvcOptions>(config =>
             {
-                
-            //     config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
-            //    var xmlDataContractSerializerInputFormatter =
-            //    new XmlDataContractSerializerInputFormatter();
-            //    xmlDataContractSerializerInputFormatter.SupportedMediaTypes
-            //        .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
-            //    config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
+                //     config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+
+                //    var xmlDataContractSerializerInputFormatter =
+                //    new XmlDataContractSerializerInputFormatter();
+                //    xmlDataContractSerializerInputFormatter.SupportedMediaTypes
+                //        .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
+                //    config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
 
                 var jsonInputFormatter = config.InputFormatters.
                               OfType<NewtonsoftJsonInputFormatter>()?.FirstOrDefault();
@@ -89,7 +90,7 @@ namespace Library.Api
                 Configuration.GetConnectionString("libraryDBConnectionString")));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            
+
             // register the repository
             services.AddScoped<ILibraryRepository, LibraryRepository>();
 
@@ -106,6 +107,24 @@ namespace Library.Api
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
 
             services.AddTransient<ITypeHelperService, TypeHelperService>();
+
+            //services.AddHttpCacheHeaders(
+            //    (expirationModelOptions)
+            //    =>
+            //        { expirationModelOptions.MaxAge = 600; },
+            //    (validationModelOptions)
+            //    =>
+            //        { validationModelOptions.AddMustRevalidate = true; });
+            services.AddHttpCacheHeaders(expires =>
+            {
+                expires.MaxAge = 600;
+                //expires.CacheLocation = CacheLocation.Private;
+
+            }, validation =>
+             {
+                 validation.MustRevalidate = true;
+             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -143,6 +162,8 @@ namespace Library.Api
 
             // init Database
             libraryContext.EnsureSeedDataForContext();
+
+            app.UseHttpCacheHeaders();
 
             app.UseHttpsRedirection();
 

@@ -122,8 +122,6 @@ C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netc
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csproj.CoreCompileInputs.cache
-C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.AssemblyInfoInputs.cache
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.AssemblyInfo.cs
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.RazorTargetAssemblyInfo.cache
@@ -134,3 +132,7 @@ C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netc
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.pdb
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.genruntimeconfig.cache
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csprojAssemblyReference.cache
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\Marvin.Cache.Headers.dll
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csproj.CoreCompileInputs.cache
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cache
