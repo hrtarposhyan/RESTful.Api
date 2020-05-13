@@ -133,6 +133,3 @@ C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netc
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.genruntimeconfig.cache
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csprojAssemblyReference.cache
 C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\bin\Debug\netcoreapp3.1\Marvin.Cache.Headers.dll
-C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.csproj.CoreCompileInputs.cache
-C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Hrachya\Source\Repos\RESTful.Api\Library.Api\Library.Api\obj\Debug\netcoreapp3.1\Library.Api.MvcApplicationPartsAssemblyInfo.cache

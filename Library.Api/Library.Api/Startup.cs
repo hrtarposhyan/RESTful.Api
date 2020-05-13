@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Linq;
 using Microsoft.Net.Http.Headers;
 using Marvin.Cache.Headers;
+using AspNetCoreRateLimit;
+using System.Collections.Generic;
 
 namespace Library.Api
 {
@@ -55,34 +57,22 @@ namespace Library.Api
 
             services.Configure<MvcOptions>(config =>
             {
-
-                //     config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-
-                //    var xmlDataContractSerializerInputFormatter =
-                //    new XmlDataContractSerializerInputFormatter();
-                //    xmlDataContractSerializerInputFormatter.SupportedMediaTypes
-                //        .Add("application/vnd.marvin.authorwithdateofdeath.full+xml");
-                //    config.InputFormatters.Add(xmlDataContractSerializerInputFormatter);
-
-                var jsonInputFormatter = config.InputFormatters.
-                              OfType<NewtonsoftJsonInputFormatter>()?.FirstOrDefault();
+                var jsonInputFormatter = config.InputFormatters.OfType<NewtonsoftJsonInputFormatter>()?.FirstOrDefault();
 
                 if (jsonInputFormatter != null)
                 {
-                    jsonInputFormatter.SupportedMediaTypes
-                    .Add("application/vnd.marvin.author.full+json");
-                    jsonInputFormatter.SupportedMediaTypes
-                    .Add("application/vnd.marvin.authorwithdateofdeath.full+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.marvin.author.full+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.marvin.authorwithdateofdeath.full+json");
                 }
 
-                var jsonOutputFormatter = config.OutputFormatters
-                   .OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+                var jsonOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
 
                 if (jsonOutputFormatter != null)
                 {
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.marvin.hateoas+json");
                 }
             });
+
             // register the DbContext on the container, getting the connection string from
             // appSettings (note: use this during development; in a production environment,
             // it's better to store the connection string in an environment variable)
@@ -108,22 +98,39 @@ namespace Library.Api
 
             services.AddTransient<ITypeHelperService, TypeHelperService>();
 
-            //services.AddHttpCacheHeaders(
-            //    (expirationModelOptions)
-            //    =>
-            //        { expirationModelOptions.MaxAge = 600; },
-            //    (validationModelOptions)
-            //    =>
-            //        { validationModelOptions.AddMustRevalidate = true; });
             services.AddHttpCacheHeaders(expires =>
             {
-                expires.MaxAge = 600;
+                expires.MaxAge = 60;
                 //expires.CacheLocation = CacheLocation.Private;
 
             }, validation =>
-             {
+            {
                  validation.MustRevalidate = true;
-             });
+            });
+
+            // needed to store rate limit counters and ip rules
+            services.AddMemoryCache();
+
+            //load general configuration from appsettings.json
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+
+            //load ip rules from appsettings.json
+            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+
+            // inject counter and rules stores
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
+            // https://github.com/aspnet/Hosting/issues/793
+            // the IHttpContextAccessor service is not registered by default.
+            // the clientId/clientIp resolvers use it.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // configuration (resolvers, counter key builders)
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+
+
 
         }
 
@@ -163,9 +170,13 @@ namespace Library.Api
             // init Database
             libraryContext.EnsureSeedDataForContext();
 
+
+
+          app.UseIpRateLimiting();
+
             app.UseHttpCacheHeaders();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
